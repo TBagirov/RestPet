@@ -1,0 +1,52 @@
+package org.rest_api.pet.Server.models;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import org.springframework.context.annotation.Primary;
+
+import java.util.List;
+
+@Entity
+@Table(name="Sensor")
+public class Sensor {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
+    @Column(name="name")
+    @NotEmpty
+    @Size(min=3, max=30, message = "The sensor name can contain from 3 to 30 characters")
+    // TODO: сделать проверку с помощью Spring Validator
+    //  что сенсора с таким названием еще нет в БД
+    private String name;
+
+    @OneToMany(mappedBy = "sensor")
+    private List<Measurement> measurements;
+
+    public Sensor(){}
+    public Sensor(String name){
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+}
