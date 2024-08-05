@@ -3,7 +3,6 @@ package org.rest_api.pet.Server.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -22,6 +21,7 @@ public class Measurement {
     private float value;
 
     @Column(name="raining")
+    @NotNull(message = "Measurements cannot contain raining")
     // @NotEmpty(message = "Rain registration cannot be omitted")
     private boolean raining;
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,6 +25,10 @@ public class SensorService {
 
     public Sensor findOne(int id){
         return sensorRepository.findById(id).orElse(null);
+    }
+
+    public Optional<Sensor> findByName(String name){
+        return Optional.ofNullable(sensorRepository.findByName(name));
     }
 
     @Transactional

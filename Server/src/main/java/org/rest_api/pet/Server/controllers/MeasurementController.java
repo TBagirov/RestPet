@@ -2,16 +2,20 @@ package org.rest_api.pet.Server.controllers;
 
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.rest_api.pet.Server.ServerApplication;
 import org.rest_api.pet.Server.dto.MeasurementDto;
 import org.rest_api.pet.Server.dto.SensorDto;
 import org.rest_api.pet.Server.models.Measurement;
 import org.rest_api.pet.Server.services.MeasurementService;
+import org.rest_api.pet.Server.utill.Measurement.MeasurementErrorResponse;
+import org.rest_api.pet.Server.utill.Measurement.MeasurementNotCreatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +34,24 @@ public class MeasurementController {
         this.modelMapper = modelMapper;
     }
 
+    // TODO: добавить адекватную валидацию поля raining
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDto measurementDto) {
+    public ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDto measurementDto,
+                                                     BindingResult bindingResult) {
 
-        // TODO: сенсору при добавлении надо как-то вставлять id
-       // Measurement measurement = convertToMeasurement(measurementDto);
+        if(bindingResult.hasErrors()){
+            StringBuilder errMsg = new StringBuilder();
+            for(FieldError fieldError : bindingResult.getFieldErrors()) {
+                errMsg.append(fieldError.getField())
+                        .append(" - ")
+                        .append(fieldError.getDefaultMessage())
+                        .append("; ");
+            }
+            throw new MeasurementNotCreatedException(errMsg.toString());
+
+        }
+
         measurementService.save(convertToMeasurement(measurementDto));
-
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -57,11 +72,21 @@ public class MeasurementController {
     }
 
     public MeasurementDto convertToMeasurementDto(Measurement measurement){
-        MeasurementDto measurenentDto = modelMapper.map(measurement, MeasurementDto.class);
+        MeasurementDto measurementDto = modelMapper.map(measurement, MeasurementDto.class);
         SensorDto sensorDto = modelMapper.map(measurement.getSensor(), SensorDto.class);
 
-        measurenentDto.setSensorDto(sensorDto);
+        measurementDto.setSensorDto(sensorDto);
 
-        return measurenentDto;
+        return measurementDto;
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<MeasurementErrorResponse> exceptionHandler(MeasurementNotCreatedException ex){
+        MeasurementErrorResponse measurementErrorResponse = new MeasurementErrorResponse(
+            ex.getMessage(),
+            LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(measurementErrorResponse, HttpStatus.BAD_REQUEST);
     }
 }

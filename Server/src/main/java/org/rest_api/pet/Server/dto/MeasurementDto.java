@@ -1,8 +1,6 @@
 package org.rest_api.pet.Server.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +12,8 @@ public class MeasurementDto {
     private float value;
 
    // @NotEmpty(message = "Rain registration cannot be omitted")
-    private boolean raining;
+   @NotNull(message = "Measurements cannot contain raining")
+   private boolean raining;
 
 
     @NotNull(message = "Measurements cannot contain sensor data")
