@@ -1,20 +1,16 @@
 package org.rest_api.pet.Server.dto;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.rest_api.pet.Server.models.Measurement;
-import org.rest_api.pet.Server.models.Sensor;
-
-import java.util.List;
 
 public class MeasurementDto {
 
     @Min(value=-100, message = "The minimum air temperature cannot be lower than -100")
-    @Min(value=100, message = "The maximum air temperature cannot be higher than 100")
+    @Max(value=100, message = "The maximum air temperature cannot be higher than 100")
     private float value;
 
    // @NotEmpty(message = "Rain registration cannot be omitted")
@@ -22,7 +18,8 @@ public class MeasurementDto {
 
 
     @NotNull(message = "Measurements cannot contain sensor data")
-    private Sensor sensor;
+    @JsonProperty("sensor")
+    private SensorDto sensorDto;
 
     @Min(value = -100, message = "The minimum air temperature cannot be lower than -100")
     @Max(value = 100, message = "The maximum air temperature cannot be higher than 100")
@@ -41,11 +38,11 @@ public class MeasurementDto {
         this.raining = raining;
     }
 
-    public @NotNull(message = "Measurements cannot contain sensor data") Sensor getSensor() {
-        return sensor;
+    public @NotNull(message = "Measurements cannot contain sensor data") SensorDto getSensorDto() {
+        return sensorDto;
     }
 
-    public void setSensor(@NotNull(message = "Measurements cannot contain sensor data") Sensor sensor) {
-        this.sensor = sensor;
+    public void setSensorDto(@NotNull(message = "Measurements cannot contain sensor data") SensorDto sensorDto) {
+        this.sensorDto = sensorDto;
     }
 }

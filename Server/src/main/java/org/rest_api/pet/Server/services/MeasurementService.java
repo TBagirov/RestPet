@@ -1,7 +1,9 @@
 package org.rest_api.pet.Server.services;
 
 import org.rest_api.pet.Server.models.Measurement;
+import org.rest_api.pet.Server.models.Sensor;
 import org.rest_api.pet.Server.repositories.MeasurementRepository;
+import org.rest_api.pet.Server.repositories.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +15,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MeasurementService {
     private final MeasurementRepository measurementRepository;
+    private final SensorRepository sensorRepository;
 
     @Autowired
-    public MeasurementService(final MeasurementRepository measurementRepository) {
+    public MeasurementService(final MeasurementRepository measurementRepository, SensorRepository sensorRepository) {
         this.measurementRepository = measurementRepository;
+        this.sensorRepository = sensorRepository;
     }
 
     public List<Measurement> findAll() {
@@ -32,9 +36,15 @@ public class MeasurementService {
     }
 
     @Transactional
-    public void save(Measurement measurement) {
+    public int save(Measurement measurement) {
+        Sensor sensor = sensorRepository.findByName(measurement.getSensor().getName());
+
+        measurement.setSensor(sensor);
         enrichMeasurement(measurement);
-        measurementRepository.save(measurement);
+
+        Measurement meas = measurementRepository.save(measurement);
+        sensor.getMeasurements().add(meas);
+        return meas.getId();
     }
 
     public void enrichMeasurement(Measurement measurement) {

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.rest_api.pet.Server.ServerApplication;
 import org.rest_api.pet.Server.dto.MeasurementDto;
+import org.rest_api.pet.Server.dto.SensorDto;
 import org.rest_api.pet.Server.models.Measurement;
 import org.rest_api.pet.Server.services.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,9 @@ public class MeasurementController {
     public ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDto measurementDto) {
 
         // TODO: сенсору при добавлении надо как-то вставлять id
+       // Measurement measurement = convertToMeasurement(measurementDto);
         measurementService.save(convertToMeasurement(measurementDto));
+
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -54,6 +57,11 @@ public class MeasurementController {
     }
 
     public MeasurementDto convertToMeasurementDto(Measurement measurement){
-        return modelMapper.map(measurement, MeasurementDto.class);
+        MeasurementDto measurenentDto = modelMapper.map(measurement, MeasurementDto.class);
+        SensorDto sensorDto = modelMapper.map(measurement.getSensor(), SensorDto.class);
+
+        measurenentDto.setSensorDto(sensorDto);
+
+        return measurenentDto;
     }
 }

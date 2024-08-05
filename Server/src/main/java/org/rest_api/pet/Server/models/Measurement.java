@@ -25,13 +25,13 @@ public class Measurement {
     // @NotEmpty(message = "Rain registration cannot be omitted")
     private boolean raining;
 
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
+
     @ManyToOne
     @JoinColumn(name="sensor_id", referencedColumnName = "id")
     @NotNull(message = "Measurements cannot contain sensor data")
     private Sensor sensor;
-
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
 
     public Measurement() {}
 
@@ -52,7 +52,7 @@ public class Measurement {
 
 
     @Min(value = -100, message = "The minimum air temperature cannot be lower than -100")
-    @Min(value = 100, message = "The maximum air temperature cannot be higher than 100")
+    @Max(value = 100, message = "The maximum air temperature cannot be higher than 100")
     public float getValue() {
         return value;
     }

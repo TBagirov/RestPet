@@ -1,6 +1,5 @@
 package org.rest_api.pet.Server.services;
 
-import org.hibernate.internal.build.AllowNonPortable;
 import org.rest_api.pet.Server.models.Sensor;
 import org.rest_api.pet.Server.repositories.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ public class SensorService {
 
     @Transactional
     public void save(Sensor sensor){
+
         sensorRepository.save(sensor);
     }
 

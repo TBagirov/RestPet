@@ -1,10 +1,8 @@
 package org.rest_api.pet.Server.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 
@@ -48,5 +46,11 @@ public class Sensor {
         this.name = name;
     }
 
+    public List<Measurement> getMeasurements() {
+        return measurements;
+    }
 
+    public void setMeasurements(List<Measurement> measurements) {
+        this.measurements = measurements;
+    }
 }
