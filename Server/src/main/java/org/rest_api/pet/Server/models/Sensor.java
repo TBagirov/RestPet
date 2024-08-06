@@ -18,8 +18,6 @@ public class Sensor {
     @Column(name="name")
     @NotEmpty
     @Size(min=3, max=30, message = "The sensor name can contain from 3 to 30 characters")
-    // TODO: сделать проверку с помощью Spring Validator
-    //  что сенсора с таким названием еще нет в БД
     private String name;
 
     @OneToMany(mappedBy = "sensor")

@@ -11,37 +11,34 @@ public class MeasurementDto {
     @Max(value=100, message = "The maximum air temperature cannot be higher than 100")
     private float value;
 
-   // @NotEmpty(message = "Rain registration cannot be omitted")
-   @NotNull(message = "Measurements cannot contain raining")
-   private boolean raining;
-
+    @NotNull(message = "Rain registration cannot be omitted")
+    private Boolean raining;
 
     @NotNull(message = "Measurements cannot contain sensor data")
+    // указываем именование ключа в json для этого поля
     @JsonProperty("sensor")
     private SensorDto sensorDto;
 
-    @Min(value = -100, message = "The minimum air temperature cannot be lower than -100")
-    @Max(value = 100, message = "The maximum air temperature cannot be higher than 100")
     public float getValue() {
         return value;
     }
-    public void setValue(@Min(value = -100, message = "The minimum air temperature cannot be lower than -100") @Max(value = 100, message = "The maximum air temperature cannot be higher than 100") float value) {
+    public void setValue( float value) {
         this.value = value;
     }
 
-    //@NotEmpty(message = "Rain registration cannot be omitted")
-    public boolean isRaining() {
+    public Boolean isRaining() {
         return raining;
     }
-    public void setRaining(/*@NotEmpty(message = "Rain registration cannot be omitted")*/ boolean raining) {
+
+    public void setRaining(Boolean raining) {
         this.raining = raining;
     }
 
-    public @NotNull(message = "Measurements cannot contain sensor data") SensorDto getSensorDto() {
+    public SensorDto getSensorDto() {
         return sensorDto;
     }
 
-    public void setSensorDto(@NotNull(message = "Measurements cannot contain sensor data") SensorDto sensorDto) {
+    public void setSensorDto(SensorDto sensorDto) {
         this.sensorDto = sensorDto;
     }
 }

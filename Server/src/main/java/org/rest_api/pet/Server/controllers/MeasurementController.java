@@ -5,9 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.rest_api.pet.Server.dto.MeasurementDto;
 import org.rest_api.pet.Server.dto.SensorDto;
 import org.rest_api.pet.Server.models.Measurement;
+import org.rest_api.pet.Server.models.Sensor;
 import org.rest_api.pet.Server.services.MeasurementService;
 import org.rest_api.pet.Server.utill.Measurement.MeasurementErrorResponse;
 import org.rest_api.pet.Server.utill.Measurement.MeasurementNotCreatedException;
+import org.rest_api.pet.Server.utill.Measurement.MeasurementValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,24 +22,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-//   ---------- !!! НЕ ТЕСТИЛОСЬ !!! ----------
 @RestController
 @RequestMapping("/measurements")
 public class MeasurementController {
 
     private MeasurementService measurementService;
+    MeasurementValidator measurementValidator;
     private ModelMapper modelMapper;
 
     @Autowired
-    public MeasurementController(MeasurementService measurementService, ModelMapper modelMapper) {
+    public MeasurementController(MeasurementService measurementService,
+                                 MeasurementValidator measurementValidator,
+                                 ModelMapper modelMapper) {
         this.measurementService = measurementService;
+        this.measurementValidator = measurementValidator;
         this.modelMapper = modelMapper;
     }
 
-    // TODO: добавить адекватную валидацию поля raining
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDto measurementDto,
                                                      BindingResult bindingResult) {
+
+        Measurement measurement = convertToMeasurement(measurementDto);
+
+        measurementValidator.validate(measurement, bindingResult);
 
         if(bindingResult.hasErrors()){
             StringBuilder errMsg = new StringBuilder();
@@ -48,10 +56,9 @@ public class MeasurementController {
                         .append("; ");
             }
             throw new MeasurementNotCreatedException(errMsg.toString());
-
         }
 
-        measurementService.save(convertToMeasurement(measurementDto));
+        measurementService.save(measurement);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -67,8 +74,12 @@ public class MeasurementController {
     }
 
     public Measurement convertToMeasurement(MeasurementDto measurementDto){
-        return modelMapper.map(measurementDto, Measurement.class);
+        Measurement measurement = modelMapper.map(measurementDto, Measurement.class);
+        Sensor sensor = modelMapper.map(measurementDto.getSensorDto(), Sensor.class);
 
+        measurement.setSensor(sensor);
+
+        return measurement;
     }
 
     public MeasurementDto convertToMeasurementDto(Measurement measurement){

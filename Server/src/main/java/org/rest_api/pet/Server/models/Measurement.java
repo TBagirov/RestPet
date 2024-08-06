@@ -21,9 +21,8 @@ public class Measurement {
     private float value;
 
     @Column(name="raining")
-    @NotNull(message = "Measurements cannot contain raining")
-    // @NotEmpty(message = "Rain registration cannot be omitted")
-    private boolean raining;
+    @NotNull(message = "Rain registration cannot be omitted")
+    private Boolean raining;
 
     @Column(name="created_at")
     private LocalDateTime createdAt;
@@ -50,31 +49,27 @@ public class Measurement {
         this.id = id;
     }
 
-
-    @Min(value = -100, message = "The minimum air temperature cannot be lower than -100")
-    @Max(value = 100, message = "The maximum air temperature cannot be higher than 100")
     public float getValue() {
         return value;
     }
 
-    public void setValue(@Min(value = -100, message = "The minimum air temperature cannot be lower than -100") @Max(value = 100, message = "The maximum air temperature cannot be higher than 100") float value) {
+    public void setValue(float value) {
         this.value = value;
     }
 
-    //@NotEmpty(message = "Rain registration cannot be omitted")
-    public boolean isRaining() {
+    public Boolean isRaining() {
         return raining;
     }
 
-    public void setRaining(/*@NotEmpty(message = "Rain registration cannot be omitted")*/ boolean raining) {
+    public void setRaining(Boolean raining) {
         this.raining = raining;
     }
 
-    public @NotNull(message = "Measurements cannot contain sensor data") Sensor getSensor() {
+    public Sensor getSensor() {
         return sensor;
     }
 
-    public void setSensor(@NotNull(message = "Measurements cannot contain sensor data") Sensor sensor) {
+    public void setSensor(Sensor sensor) {
         this.sensor = sensor;
     }
 
