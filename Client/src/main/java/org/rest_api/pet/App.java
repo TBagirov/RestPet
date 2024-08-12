@@ -3,6 +3,7 @@ package org.rest_api.pet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.rest_api.pet.models.Measurement;
 import org.rest_api.pet.models.Sensor;
+import org.rest_api.pet.responses.MeasurementErrorResponse;
 import org.rest_api.pet.responses.MeasurementList;
 import org.rest_api.pet.responses.SensorErrorResponse;
 import org.springframework.core.ParameterizedTypeReference;
@@ -103,7 +104,7 @@ public class App {
 
     }
 
-    public static String addSensor(String name){
+    public static String addSensor(String name) {
         String url = "http://localhost:8080/sensors/registration";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -113,7 +114,7 @@ public class App {
         String str = "";
 
         try {
-         str = restTemplate.postForObject(url, request, String.class);
+            str = restTemplate.postForObject(url, request, String.class);
         } catch (HttpClientErrorException e) {
             String error = e.getResponseBodyAsString();
 
@@ -122,10 +123,11 @@ public class App {
             try{
                  errorResponse = objectMapper.readValue(error, SensorErrorResponse.class);
             } catch (Exception ex) {
-                System.out.println("Ошибка десериализации SensorErrorResponse");
+                System.out.println("Ошибка десериализации в SensorErrorResponse");
                 ex.printStackTrace();
             }
 
+            System.out.println("\n----- Ошибка -----");
             System.out.println(errorResponse.getMessage());
             System.out.println(errorResponse.getTimestamp());
         }
@@ -141,12 +143,33 @@ public class App {
         Measurement body = new Measurement(measurement.getValue(), measurement.getRaining(), measurement.getSensor());
         HttpEntity<Measurement> request = new HttpEntity<>(body, headers);
 
-        return restTemplate.postForObject(url, request, String.class);
+        String str = "";
+        try {
+            str = restTemplate.postForObject(url, request, String.class);
+        } catch(HttpClientErrorException e){
+            String error = e.getResponseBodyAsString();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            MeasurementErrorResponse errorResponse = new MeasurementErrorResponse();
+            try{
+                errorResponse = objectMapper.readValue(error, MeasurementErrorResponse.class);
+            } catch(Exception ex){
+                System.out.println("Ошибка десериализации в MeasurementErrorResponse");
+                ex.printStackTrace();
+            }
+
+            System.out.println("\n----- Ошибка -----");
+            System.out.println(errorResponse.getMessage());
+            System.out.println(errorResponse.getTimestamp());
+        }
+
+        return str;
     }
 
     public static MeasurementList getMeasurements(){
         String url = "http://localhost:8080/measurements";
 
+        // из-за сложной десериализации
         ResponseEntity<List<Measurement>> responseEntity = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
