@@ -1,10 +1,13 @@
 package org.rest_api.pet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.rest_api.pet.models.Measurement;
 import org.rest_api.pet.models.Sensor;
 import org.rest_api.pet.responses.MeasurementList;
+import org.rest_api.pet.responses.SensorErrorResponse;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -20,7 +23,10 @@ public class App {
     private static Scanner sc = new Scanner(System.in);
     private static RestTemplate restTemplate = new RestTemplate();
 
-    static {sc.useLocale(Locale.UK);}
+    static {
+        sc.useLocale(Locale.UK);
+
+    }
 
     public static void main( String[] args ) {
 
@@ -102,10 +108,29 @@ public class App {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        Sensor body = new Sensor(name);
+        Sensor   body = new Sensor(name);
         HttpEntity<Sensor> request = new HttpEntity<>(body, headers);
+        String str = "";
 
-        return restTemplate.postForObject(url, request, String.class);
+        try {
+         str = restTemplate.postForObject(url, request, String.class);
+        } catch (HttpClientErrorException e) {
+            String error = e.getResponseBodyAsString();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            SensorErrorResponse errorResponse = new SensorErrorResponse();
+            try{
+                 errorResponse = objectMapper.readValue(error, SensorErrorResponse.class);
+            } catch (Exception ex) {
+                System.out.println("Ошибка десериализации SensorErrorResponse");
+                ex.printStackTrace();
+            }
+
+            System.out.println(errorResponse.getMessage());
+            System.out.println(errorResponse.getTimestamp());
+        }
+
+        return str;
     }
 
     public static String addMeasurement(Measurement measurement){
