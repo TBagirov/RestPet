@@ -1,5 +1,8 @@
 package org.rest_api.pet.Server.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.rest_api.pet.Server.dto.SensorDto;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/sensors")
+@Tag(name = "Sensor Controller", description = "Контроллер для взаимодействия с сенсором")
 public class SensorController {
     private final SensorService sensorService;
     SensorValidator sensorValidator;
@@ -34,8 +38,13 @@ public class SensorController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> registerSensor(@RequestBody @Valid SensorDto sensorDto,
-                                                     BindingResult bindingResult) {
+    @Operation(
+            summary = "Регистрация сенсора",
+            description = "Регистрация сенсора с указанным наименованием"
+    )
+    public ResponseEntity<HttpStatus> registerSensor(
+            @RequestBody @Valid @Parameter(description = "Наименование добавляемого сенсора", required = true) SensorDto sensorDto,
+            BindingResult bindingResult) {
 
         Sensor sensor = convertToSensor(sensorDto);
         sensorValidator.validate(sensor, bindingResult);
@@ -56,6 +65,10 @@ public class SensorController {
     }
 
     @GetMapping()
+    @Operation(
+            summary = "Получение всех сенсоров",
+            description = "Получение данных о всех сенсорах имеющихся в БД"
+    )
     public List<SensorDto> getSensors(){
         return sensorService.findAll().stream()
                 .map(this::convertToSensorDto)
@@ -63,7 +76,13 @@ public class SensorController {
     }
 
     @GetMapping("/{id}")
-    public SensorDto getSensor(@PathVariable("id") int id){
+    @Operation(
+            summary = "Получение сенсора по id",
+            description = "Получение данных о конекртном сенсоре по указанному id"
+    )
+    public SensorDto getSensor(
+            @PathVariable("id") @Parameter(description = "id сенсора чьи данные хотим получить") int id
+    ){
         return convertToSensorDto(sensorService.findOne(id));
     }
 
