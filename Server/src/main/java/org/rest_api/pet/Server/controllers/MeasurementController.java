@@ -1,5 +1,8 @@
 package org.rest_api.pet.Server.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.rest_api.pet.Server.dto.MeasurementDto;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/measurements")
+@Tag(name = "Measurement Controller", description = "Контроллер для взаимодействия с измерениями сенсоров")
 public class MeasurementController {
 
     private MeasurementService measurementService;
@@ -40,8 +44,13 @@ public class MeasurementController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDto measurementDto,
-                                                     BindingResult bindingResult) {
+    @Operation(
+            summary = "Добавление измерения сенсора",
+            description = "Добавление измерения сенсора по заданному наименованию"
+    )
+    public ResponseEntity<HttpStatus> addMeasurement(
+            @RequestBody @Valid @Parameter(description = "Данные измерения включающие наименование сенсора, который произвел измерение") MeasurementDto measurementDto,
+            BindingResult bindingResult) {
 
         Measurement measurement = convertToMeasurement(measurementDto);
 
@@ -63,12 +72,20 @@ public class MeasurementController {
     }
 
     @GetMapping()
+    @Operation(
+            summary = "Получение всех измерений",
+            description = "Получение данных о всех добавленных измерениях"
+    )
     public List<MeasurementDto> getAllMeasurements() {
         return measurementService.findAll().stream().map(this::convertToMeasurementDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/rainyDaysCount")
+    @Operation(
+            summary = "Получение количества дождливых дней",
+            description = "Получение количества дней, в которые какой-либо сенсор зарегестрировал дождь"
+    )
     public int getRainyDaysCount() {
         return measurementService.findByRainyDaysCount().size();
     }

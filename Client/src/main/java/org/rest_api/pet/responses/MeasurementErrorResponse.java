@@ -1,15 +1,14 @@
 package org.rest_api.pet.responses;
 
 
-public class SensorErrorResponse {
+public class MeasurementErrorResponse {
+
+
     private String message;
+    private String timestamp;
 
-    // тип данныех не LocalDateTime потому что это сильно усложняет десериализацию для Jackson
-    private String  timestamp;
-
-    public SensorErrorResponse() {}
-
-    public SensorErrorResponse(String message, String timestamp) {
+    public MeasurementErrorResponse(){}
+    public MeasurementErrorResponse(String message, String timestamp) {
         this.message = message;
         this.timestamp = timestamp;
     }
@@ -27,5 +26,6 @@ public class SensorErrorResponse {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
-}
 
+
+}
