@@ -1,7 +1,7 @@
-package org.rest_api.pet.Server.utill.Measurement;
+package org.rest_api.pet.utill.Measurement;
 
-import org.rest_api.pet.Server.models.Measurement;
-import org.rest_api.pet.Server.services.SensorService;
+import org.rest_api.pet.models.Measurement;
+import org.rest_api.pet.services.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

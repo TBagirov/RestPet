@@ -1,11 +1,15 @@
-package org.rest_api.pet.Server.dto;
+package org.rest_api.pet.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Schema(
         description = "Сущность измерения сенсора"
 )
@@ -26,26 +30,5 @@ public class MeasurementDto {
     @Schema(description = "Наименование сенсора", example = "Sensor1")
     private SensorDto sensorDto;
 
-    public float getValue() {
-        return value;
-    }
-    public void setValue( float value) {
-        this.value = value;
-    }
 
-    public Boolean isRaining() {
-        return raining;
-    }
-
-    public void setRaining(Boolean raining) {
-        this.raining = raining;
-    }
-
-    public SensorDto getSensorDto() {
-        return sensorDto;
-    }
-
-    public void setSensorDto(SensorDto sensorDto) {
-        this.sensorDto = sensorDto;
-    }
 }

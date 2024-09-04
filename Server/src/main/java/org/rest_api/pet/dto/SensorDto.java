@@ -1,9 +1,13 @@
-package org.rest_api.pet.Server.dto;
+package org.rest_api.pet.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Schema(
         description = "включает в себя наименование сенсора"
 )
@@ -13,11 +17,4 @@ public class SensorDto {
     @Schema(description = "Наименование сенсора", example = "Sensor1")
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
