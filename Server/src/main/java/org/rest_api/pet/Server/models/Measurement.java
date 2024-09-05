@@ -1,20 +1,15 @@
-package org.rest_api.pet.models;
+package org.rest_api.pet.Server.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
 @Table(name="Measurement")
 public class Measurement {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -37,6 +32,8 @@ public class Measurement {
     @NotNull(message = "Measurements cannot contain sensor data")
     private Sensor sensor;
 
+    public Measurement() {}
+
     public Measurement(float value, boolean raining, Sensor sensor, LocalDateTime createdAt) {
         this.value = value;
         this.raining = raining;
@@ -44,4 +41,43 @@ public class Measurement {
         this.createdAt = createdAt;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    public Boolean isRaining() {
+        return raining;
+    }
+
+    public void setRaining(Boolean raining) {
+        this.raining = raining;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

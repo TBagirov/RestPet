@@ -1,9 +1,9 @@
-package org.rest_api.pet.services;
+package org.rest_api.pet.Server.services;
 
-import org.rest_api.pet.models.Measurement;
-import org.rest_api.pet.models.Sensor;
-import org.rest_api.pet.repositories.MeasurementRepository;
-import org.rest_api.pet.repositories.SensorRepository;
+import org.rest_api.pet.Server.models.Measurement;
+import org.rest_api.pet.Server.models.Sensor;
+import org.rest_api.pet.Server.repositories.MeasurementRepository;
+import org.rest_api.pet.Server.repositories.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
