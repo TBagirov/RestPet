@@ -1,4 +1,4 @@
-package org.rest_api.pet.Server;
+package org.rest_api.pet;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

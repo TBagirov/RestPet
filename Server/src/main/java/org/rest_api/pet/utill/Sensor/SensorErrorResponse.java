@@ -1,14 +1,13 @@
-package org.rest_api.pet.Server.utill.Measurement;
+package org.rest_api.pet.utill.Sensor;
+
 
 import java.time.LocalDateTime;
 
-public class MeasurementErrorResponse {
-
-
+public class SensorErrorResponse {
     private String message;
     private LocalDateTime timestamp;
 
-    public MeasurementErrorResponse(String message, LocalDateTime timestamp) {
+    public SensorErrorResponse(String message, LocalDateTime timestamp) {
         this.message = message;
         this.timestamp = timestamp;
     }
@@ -28,6 +27,4 @@ public class MeasurementErrorResponse {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
-
-
 }
