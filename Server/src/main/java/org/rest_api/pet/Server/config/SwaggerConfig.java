@@ -1,4 +1,4 @@
-package org.rest_api.pet.config;
+package org.rest_api.pet.Server.config;
 
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

@@ -1,4 +1,4 @@
-package org.rest_api.pet;
+package org.rest_api.pet.Server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

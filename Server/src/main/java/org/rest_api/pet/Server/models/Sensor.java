@@ -1,4 +1,4 @@
-package org.rest_api.pet.models;
+package org.rest_api.pet.Server.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

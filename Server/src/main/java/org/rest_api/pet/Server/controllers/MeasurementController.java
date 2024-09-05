@@ -1,18 +1,18 @@
-package org.rest_api.pet.controllers;
+package org.rest_api.pet.Server.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.rest_api.pet.dto.MeasurementDto;
-import org.rest_api.pet.dto.SensorDto;
-import org.rest_api.pet.models.Measurement;
-import org.rest_api.pet.models.Sensor;
-import org.rest_api.pet.services.MeasurementService;
-import org.rest_api.pet.utill.Measurement.MeasurementErrorResponse;
-import org.rest_api.pet.utill.Measurement.MeasurementNotCreatedException;
-import org.rest_api.pet.utill.Measurement.MeasurementValidator;
+import org.rest_api.pet.Server.dto.MeasurementDto;
+import org.rest_api.pet.Server.dto.SensorDto;
+import org.rest_api.pet.Server.models.Measurement;
+import org.rest_api.pet.Server.models.Sensor;
+import org.rest_api.pet.Server.services.MeasurementService;
+import org.rest_api.pet.Server.utill.Measurement.MeasurementErrorResponse;
+import org.rest_api.pet.Server.utill.Measurement.MeasurementNotCreatedException;
+import org.rest_api.pet.Server.utill.Measurement.MeasurementValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
