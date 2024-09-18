@@ -1,16 +1,16 @@
-package org.rest_api.pet.Server.controllers;
+package org.rest_api.pet.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.rest_api.pet.Server.dto.SensorDto;
-import org.rest_api.pet.Server.models.Sensor;
-import org.rest_api.pet.Server.services.SensorService;
-import org.rest_api.pet.Server.utill.Sensor.SensorErrorResponse;
-import org.rest_api.pet.Server.utill.Sensor.SensorNotCreatedException;
-import org.rest_api.pet.Server.utill.Sensor.SensorValidator;
+import org.rest_api.pet.dto.SensorDto;
+import org.rest_api.pet.models.Sensor;
+import org.rest_api.pet.services.SensorService;
+import org.rest_api.pet.utill.Sensor.SensorErrorResponse;
+import org.rest_api.pet.utill.Sensor.SensorNotCreatedException;
+import org.rest_api.pet.utill.Sensor.SensorValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
