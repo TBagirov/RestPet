@@ -26,9 +26,26 @@ dependencies {
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
+
+	// JUnit 5
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+
+	// Selenium WebDriver
+	testImplementation 'org.seleniumhq.selenium:selenium-java:4.14.1'
+
+	// AssertJ для удобных утверждений
+	testImplementation 'org.assertj:assertj-core:3.24.2'
+
+	// WebDriver Manager для автоматического управления драйверами браузеров
+	testImplementation 'io.github.bonigarcia:webdrivermanager:5.5.3'
+
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(Test) {
+	useJUnitPlatform()
 }
 
 tasks.named('test') {
